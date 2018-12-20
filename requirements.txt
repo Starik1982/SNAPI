@@ -1,0 +1,12 @@
+Django==1.11.17
+djangorestframework
+markdown
+django-filter
+djoser
+djangorestframework-jwt==1.11.0
+
+
+
+
+
+

@@ -17,11 +17,17 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.authtoken import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^auth/', include('loginsys.urls')),
+    url(r'^users/', include('loginsys.urls')),
     url(r'^api/posts/', include("posts.api.urls", namespace='posts-api')),
+    url(r'^api/users/', include("loginsys.api.urls", namespace='loginsys-api')),
+    url(r'^api-token-auth/', views.obtain_auth_token, name='api-token-auth'),
+    url(r'^auth/', include('djoser.urls')),
+    url(r'^auth/', include('djoser.urls.jwt')),
+    url(r'^auth/', include('djoser.urls.authtoken')),
     url(r'^', include('posts.urls')),
 
 

@@ -12,6 +12,9 @@ from django.contrib import messages
 from .models import *
 from .forms import PostForm
 
+def info(request):
+    return render_to_response('info.html')
+
 def get_post(request, post_id=1):
     args = {}
     args['get_post'] = Post.objects.get(id=post_id)

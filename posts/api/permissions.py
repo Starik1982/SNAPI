@@ -4,7 +4,7 @@ class IsOwnerOrReadOnly(BasePermission):
 	message = "Только автор статьи может её редактировать."
 	my_safe_method = ['GET', 'PUT']
 
-	def has_permision(self, request, view):
+	def has_permission(self, request, view):
 		if request.method in self.my_safe_method:
 			return True
 		return False

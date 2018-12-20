@@ -1,12 +1,17 @@
+from django.shortcuts import get_object_or_404, redirect
+from rest_framework import status
+
 from rest_framework.generics import(
 	ListAPIView, 				
 	RetrieveAPIView,
 	UpdateAPIView,
 	DestroyAPIView,
 	CreateAPIView,
-	RetrieveUpdateAPIView
+	RetrieveUpdateAPIView,
 	) 
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.permissions import(
 	AllowAny,
 	IsAuthenticated,
@@ -18,15 +23,31 @@ from posts.api.serializers import (
 	PostListSerializer,
 	PostDetailSerializer,
 	PostUpdateSerializer,
-	PostCreateSerializer
+	PostCreateSerializer,
+	PostLikeSerializer,
+
 	)
 from .permissions import IsOwnerOrReadOnly
 from posts.models import Post
 
 
+class PostCreatelAPIView(CreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostCreateSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
 class PostListAPIView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
+
+
+class PostDetailAPIView(RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostDetailSerializer
 
 
 class PostUpdateAPIView(RetrieveUpdateAPIView):
@@ -35,20 +56,25 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
 
-class PostDeleteAPIView(DestroyAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostListSerializer
+class PostDeleteAPIView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    def delete(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        post.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class PostDetailAPIView(RetrieveAPIView):
-	queryset = Post.objects.all()
-	serializer_class = PostDetailSerializer
+class PostLikeView(APIView):
+	def like(self, request, pk = 47):
+		queryset = get_object_or_404(Post, pk=pk)
+		queryset.like = queryset.like + 1
+		queryset.save()
+		serializer = PostLikeSerializer(queryset)
+		print('this is queryset ' + str(queryset.like))
+		return Response(serializer.data)
 
-class PostCreatelAPIView(CreateAPIView):
-	queryset = Post.objects.all()
-	serializer_class = PostCreateSerializer
-	permission_classes = [IsAuthenticated]
 
-	def perform_create(self, serializer):
-		serializer.save(user=self.request.user)
-		
+
+
+
+

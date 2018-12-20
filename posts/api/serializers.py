@@ -1,9 +1,13 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import (
+	ModelSerializer,
+	SerializerMethodField,
+	)
 
 from posts.models import Post
 
 
 class PostListSerializer(ModelSerializer):
+	user = SerializerMethodField()
 	class Meta:
 		model = Post
 		fields = [
@@ -12,20 +16,26 @@ class PostListSerializer(ModelSerializer):
 		'user',
 		'like',
 		'dislike',
-		'id',		
+		'id',
 		]
+	def get_user(self, obj):
+		return  str(obj.user.username)
+
 
 class PostDetailSerializer(ModelSerializer):
-	class Meta:
-		model = Post
-		fields = [
-		'title',
-		'content',
-		'user',
-		'like',
-		'dislike',
-		'id',		
-		]
+    user = SerializerMethodField()
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'title',
+            'content',
+            'user',
+        ]
+    def get_user(self, obj):
+        return  str(obj.user.username)
+
+
 
 class PostUpdateSerializer(ModelSerializer):
 	class Meta:
@@ -35,10 +45,19 @@ class PostUpdateSerializer(ModelSerializer):
 		'content',
 		]
 
+
 class PostCreateSerializer(ModelSerializer):
 	class Meta:
 		model = Post
 		fields = [
 		'title',
 		'content',	
+		]
+
+class PostLikeSerializer(ModelSerializer):
+	class Meta:
+		model = Post
+		fields = [
+		'like',
+		
 		]

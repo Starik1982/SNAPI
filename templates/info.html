@@ -1,0 +1,38 @@
+{% extends "main.html" %}
+
+{% block content %}
+<h2>Регистрируем пользователя.</h2>
+<h5>{домен}/auth/users/?username={имя пользователя}&password={пароль}&email={email}</h5>
+<hr align="left"/>
+<h2>Получаем token пользователя (Авторизация).</h2>
+<h5>{домен}/auth/token/login/?username={имя пользователя}&password={пароль}</h5>
+<hr align="left"/>
+<h2>Получаем список статей.</h2>
+<h5>{домен}/api/posts/</h5>
+<hr align="left"/>
+<h2>Получаем статью.</h2>
+<h5>{домен}/api/posts/{id статьи}/</h5>
+<hr align="left"/>
+<h2>Редактируем статью.</h2>
+<h5>{домен}/api/posts/edit/{id статьи}/</h5>
+<h5>Функция доступна только авторизорованым пользователям: автору, администратору.</h5>
+<hr align="left"/>
+<h2>Удаляем статью.</h2>
+<h5>{домен}/api/posts/delete/{id статьи}/</h5>
+<h5>Функция доступна только авторизорованым пользователям: автору, администратору.</h5>
+<hr align="left"/>
+<h2>Создаем статью.</h2>
+<h5>{домен}/api/posts/create/</h5>
+<h5>Функция доступна только авторизорованым пользователям.</h5>
+<hr align="left"/>
+<h2>Like</h2>
+<h5>{домен}/api/adlike/{id статьи}/</h5>
+<h5>Пользователь может поставить либо Like либо Dislike. Реализовать через Django REST framework не получилось :( </h5>
+<hr align="left"/>
+<h2>Dislike</h2>
+<h5>{домен}/api/addislike/{id статьи}/</h5>
+<h5>Пользователь может поставить либо Like либо Dislike. Реализовать через Django REST framework не получилось :( </h5>
+<hr align="left"/>
+
+
+{% endblock content %}

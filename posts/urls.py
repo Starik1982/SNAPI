@@ -10,6 +10,7 @@ from .views import (
 	post_delete,
 	ad_like,
 	ad_dislike,
+	info,
 	)
 
 urlpatterns = [
@@ -20,5 +21,6 @@ urlpatterns = [
 	url(r'^delete/(?P<post_id>[\w-]+)/$', post_delete),
 	url(r'^adlike/(?P<post_id>[\w-]+)/$', ad_like, name ='ad_like'),
 	url(r'^addislike/(?P<post_id>[\w-]+)/$', ad_dislike, name ='ad_dislike'),
+	url(r'^info/$', info, name ='info'),
 
 ]
